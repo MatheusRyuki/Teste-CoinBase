@@ -3,11 +3,10 @@ import {
   Post,
   UseInterceptors,
   UploadedFile,
-  HttpStatus,
-  Res,
+  BadRequestException,
+  Body,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Response } from 'express';
 import { UploadService } from './upload.service';
 
 @Controller('upload')
@@ -16,20 +15,15 @@ export class UploadController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(
-    @UploadedFile() file: Express.Multer.File,
-    @Res() res: Response,
-  ) {
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
     if (!file) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json({ message: 'Arquivo não entregue!' });
+      throw new BadRequestException('Arquivo é preciso!');
     }
 
-    const filePath = await this.uploadService.saveFile(file);
-    return res.status(HttpStatus.OK).json({
-      message: 'Upload do arquivo feito com sucesso!',
-      path: filePath,
-    });
+    const metrics = await this.uploadService.handleUploadAndCalculateMetrics(
+      file.buffer,
+    );
+
+    return { message: 'Arquivo processado com sucesso', data: metrics };
   }
 }
