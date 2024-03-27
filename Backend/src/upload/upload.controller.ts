@@ -23,14 +23,13 @@ export class UploadController {
     if (!file) {
       return res
         .status(HttpStatus.BAD_REQUEST)
-        .json({ message: 'No file provided!' });
+        .json({ message: 'Arquivo não entregue!' });
     }
 
-    await this.uploadService.handleFile(file);
-
+    const filePath = await this.uploadService.saveFile(file);
     return res.status(HttpStatus.OK).json({
-      message: 'File uploaded successfully!',
-      fileInfo: { filename: file.originalname, size: file.size },
+      message: 'Upload do arquivo feito com sucesso!',
+      path: filePath,
     });
   }
 }
