@@ -1,5 +1,3 @@
-// src/components/FileUpload.vue
-
 <template>
   <div>
     <input type="file" @change="handleFileUpload" />
@@ -8,33 +6,39 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import axios from 'axios';
+import { ref } from "vue";
+import axios from "axios";
 
 const selectedFile = ref(null);
+const emit = defineEmits(['upload-success']);
 
-function handleFileUpload(event) {
+const handleFileUpload = (event) => {
   selectedFile.value = event.target.files[0];
-}
+};
 
-async function submitFile() {
+const submitFile = async () => {
   if (!selectedFile.value) {
-    alert('Por favor, escolha um arquivo');
+    alert("Por favor, escolha um arquivo");
     return;
   }
 
   const formData = new FormData();
-  formData.append('file', selectedFile.value);
+  formData.append("file", selectedFile.value);
 
   try {
-    const response = await axios.post('http://localhost:3000/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    console.log('Sucesso ao fazer Upload do arquivo', response.data);
+    const response = await axios.post(
+      "http://localhost:3000/upload",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    emit("upload-success", response.data);
   } catch (error) {
-    console.error('Erro ao fazer upload do arquivo', error);
+    console.error("Erro ao fazer upload do arquivo", error);
   }
-}
+};
 </script>
