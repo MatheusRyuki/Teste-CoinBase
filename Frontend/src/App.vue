@@ -1,13 +1,13 @@
 <template>
   <div>
     <h1>Métricas</h1>
-    <FileUpload @upload-success="handleUploadSuccess" />
-    <MrrChart :mrr="metricsData.mrr" v-if="metricsData.mrr" />
+    <FileUpload @upload-success="handleUploadSuccess" :is-loading="isLoading" />
+    <div v-if="isLoading">Carregando...</div>
+    <MrrChart :mrr="metricsData.mrr" v-if="metricsData.mrr && !isLoading" />
     <ChurnRateChart
       :churnRate="metricsData.churnRate"
-      v-if="metricsData.churnRate !== null"
+      v-if="metricsData.churnRate !== null && !isLoading"
     />
-   
   </div>
 </template>
 
@@ -19,7 +19,7 @@ import ChurnRateChart from "./components/ChurnRateChart.vue";
 
 const metricsData = ref({
   mrr: null,
-  churnRate: null
+  churnRate: null,
 });
 
 const handleUploadSuccess = (data) => {

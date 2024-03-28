@@ -5,9 +5,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { BarChart } from 'vue-chart-3';
-import { Chart, registerables } from 'chart.js';
+import { ref } from "vue";
+import { BarChart } from "vue-chart-3";
+import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 const props = defineProps({
@@ -15,14 +15,14 @@ const props = defineProps({
 });
 
 const chartData = ref({
-  labels: ['MRR'],
+  labels: ["MRR"],
   datasets: [
     {
-      label: 'MRR (R$)',
-      backgroundColor: '#36A2EB',
+      label: "MRR (R$)",
+      backgroundColor: "#36A2EB",
       data: [props.mrr],
-    }
-  ]
+    },
+  ],
 });
 
 const chartOptions = ref({
@@ -31,7 +31,13 @@ const chartOptions = ref({
   scales: {
     y: {
       beginAtZero: true,
-    }
-  }
+    },
+  },
+  plugins: {
+    title: {
+      display: true,
+      text: "MRR - Receita Mensal Recorrente",
+    },
+  },
 });
 </script>

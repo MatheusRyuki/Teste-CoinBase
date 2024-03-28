@@ -10,7 +10,8 @@ import { ref } from "vue";
 import axios from "axios";
 
 const selectedFile = ref(null);
-const emit = defineEmits(['upload-success']);
+const isLoading = ref(false);
+const emit = defineEmits(["upload-success"]);
 
 const handleFileUpload = (event) => {
   selectedFile.value = event.target.files[0];
@@ -22,6 +23,7 @@ const submitFile = async () => {
     return;
   }
 
+  isLoading.value = true;
   const formData = new FormData();
   formData.append("file", selectedFile.value);
 
@@ -39,6 +41,8 @@ const submitFile = async () => {
     emit("upload-success", response.data);
   } catch (error) {
     console.error("Erro ao fazer upload do arquivo", error);
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
