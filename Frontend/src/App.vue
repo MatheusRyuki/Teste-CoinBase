@@ -1,13 +1,12 @@
 <template>
-  <div>
-    <h1>Métricas</h1>
+  <div class="metrics-container">
+    <h1 class="page-title">Métricas de Desempenho</h1>
     <FileUpload @upload-success="handleUploadSuccess" :is-loading="isLoading" />
-    <div v-if="isLoading">Carregando...</div>
-    <MrrChart :metrics="metricsData" v-if="metricsData.length && !isLoading" />
-    <ChurnRateChart
-      :metrics="metricsData"
-      v-if="metricsData.length && !isLoading"
-    />
+    <div v-if="isLoading" class="loading-indicator">Carregando...</div>
+    <div v-if="!isLoading && metricsData.length" class="charts">
+      <MrrChart :metrics="metricsData" />
+      <ChurnRateChart :metrics="metricsData" />
+    </div>
   </div>
 </template>
 
@@ -35,3 +34,36 @@ const handleUploadSuccess = (data) => {
   metricsData.value = filteredAndSortedData;
 };
 </script>
+
+<style>
+.metrics-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.loading-indicator {
+  text-align: center;
+  margin-top: 20px;
+  font-style: italic;
+}
+
+.charts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .charts {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+</style>
