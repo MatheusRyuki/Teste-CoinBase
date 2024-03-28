@@ -11,16 +11,16 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 const props = defineProps({
-  mrr: Number,
+  metrics: Array,
 });
 
 const chartData = ref({
-  labels: ["MRR"],
+  labels: props.metrics.map((metric) => metric.monthYear),
   datasets: [
     {
       label: "MRR (R$)",
       backgroundColor: "#36A2EB",
-      data: [props.mrr],
+      data: props.metrics.map((metric) => metric.mrr),
     },
   ],
 });

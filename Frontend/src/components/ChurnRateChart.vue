@@ -11,16 +11,16 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 const props = defineProps({
-  churnRate: Number,
+  metrics: Array,
 });
 
 const chartData = ref({
-  labels: ["Taxa de Churn"],
+  labels: props.metrics.map((metric) => metric.monthYear),
   datasets: [
     {
       label: "Taxa de Churn (%)",
       backgroundColor: "#FF6384",
-      data: [props.churnRate],
+      data: props.metrics.map((metric) => metric.churnRate),
     },
   ],
 });
@@ -31,12 +31,13 @@ const chartOptions = ref({
   scales: {
     y: {
       beginAtZero: true,
+      suggestedMax: 100,
     },
   },
   plugins: {
     title: {
       display: true,
-      text: "ChurnRate - Porcentagem de Cancelamento",
+      text: "Taxa de Churn - Porcentagem de Cancelamento",
     },
   },
 });
