@@ -5,13 +5,19 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { BarChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 const props = defineProps({
   metrics: Array,
+});
+
+const dynamicColors = computed(() => {
+  return props.metrics.map((metric, index) => {
+    return index % 2 === 0 ? "#36A2EB" : "#FFCD56";
+  });
 });
 
 const emit = defineEmits(["bar-click"]);
@@ -21,7 +27,7 @@ const chartData = ref({
   datasets: [
     {
       label: "MRR (R$)",
-      backgroundColor: "#36A2EB",
+      backgroundColor: dynamicColors.value,
       data: props.metrics.map((metric) => metric.mrr),
     },
   ],

@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { BarChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
@@ -14,6 +14,18 @@ const props = defineProps({
   metrics: Array,
 });
 
+const dynamicColors = computed(() => {
+  return props.metrics.map((metric) => {
+    const churnRate = metric.churnRate;
+    if (churnRate < 10) {
+      return "#76D7C4"; 
+    } else if (churnRate < 20) {
+      return "#F7DC6F"; 
+    } else {
+      return "#E74C3C";
+    }
+  });
+});
 const emit = defineEmits(["bar-click"]);
 
 const onElementClick = (event, element, chart) => {
@@ -29,7 +41,7 @@ const chartData = ref({
   datasets: [
     {
       label: "Taxa de Churn (%)",
-      backgroundColor: "#FF6384",
+      backgroundColor: dynamicColors.value,
       data: props.metrics.map((metric) => metric.churnRate),
     },
   ],
