@@ -32,15 +32,13 @@ const submitFile = async () => {
   formData.append("file", selectedFile.value);
 
   try {
-    const response = await axios.post(
-      "http://localhost:3000/upload",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  
+    const response = await axios.post(`${backendUrl}/upload`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     emit("upload-success", response.data);
     message.value = "Arquivo carregado e métricas calculadas com sucesso!";
