@@ -4,9 +4,14 @@
     <FileUpload @upload-success="handleUploadSuccess" :is-loading="isLoading" />
     <div v-if="isLoading" class="loading-indicator">Carregando...</div>
     <div v-if="!isLoading && metricsData.length" class="charts">
-      <MrrChart :metrics="metricsData" />
-      <ChurnRateChart :metrics="metricsData" />
+      <MrrChart :metrics="metricsData" @bar-click="onChartClick" />
+      <ChurnRateChart :metrics="metricsData" @bar-click="onChartClick" />
     </div>
+    <Modal
+      :show-modal="showDetailsModal"
+      :details="metricDetails"
+      @close="showDetailsModal = false"
+    />
   </div>
 </template>
 
@@ -15,8 +20,11 @@ import { ref } from "vue";
 import FileUpload from "./components/Upload.vue";
 import MrrChart from "./components/MrrChart.vue";
 import ChurnRateChart from "./components/ChurnRateChart.vue";
+import Modal from "./components/Modal.vue";
 
 const metricsData = ref([]);
+const showDetailsModal = ref(false);
+const metricDetails = ref("");
 
 const handleUploadSuccess = (data) => {
   const filteredAndSortedData = data.data
@@ -32,6 +40,11 @@ const handleUploadSuccess = (data) => {
     });
 
   metricsData.value = filteredAndSortedData;
+};
+
+const onChartClick = (metric) => {
+  metricDetails.value = `Análise detalhada para ${metric.monthYear}: MRR de ${metric.mrr} e uma taxa de Churn de ${metric.churnRate}%.`;
+  showDetailsModal.value = true;
 };
 </script>
 

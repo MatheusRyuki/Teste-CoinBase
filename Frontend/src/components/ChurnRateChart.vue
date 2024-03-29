@@ -14,6 +14,16 @@ const props = defineProps({
   metrics: Array,
 });
 
+const emit = defineEmits(["bar-click"]);
+
+const onElementClick = (event, element, chart) => {
+  if (element.length) {
+    const index = element[0].index;
+    const metric = props.metrics[index];
+    emit("bar-click", metric);
+  }
+};
+
 const chartData = ref({
   labels: props.metrics.map((metric) => metric.monthYear),
   datasets: [
@@ -28,6 +38,10 @@ const chartData = ref({
 const chartOptions = ref({
   responsive: true,
   maintainAspectRatio: false,
+  animation: {
+    duration: 2000,
+    easing: "easeOutQuart",
+  },
   scales: {
     y: {
       beginAtZero: true,
@@ -40,5 +54,9 @@ const chartOptions = ref({
       text: "Taxa de Churn - Porcentagem de Cancelamento",
     },
   },
+  onHover: (event, chartElement) => {
+    event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+  },
+  onClick: onElementClick,
 });
 </script>
