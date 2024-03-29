@@ -5,9 +5,12 @@
 </template>
 
 <script setup>
+// Importações e configurações semelhantes ao ChurnRateChart.vue
+// Adaptado para os dados do MRR com cores dinâmicas alternadas
 import { ref, computed } from "vue";
 import { BarChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
+
 Chart.register(...registerables);
 
 const props = defineProps({
@@ -23,6 +26,7 @@ const dynamicColors = computed(() => {
 const emit = defineEmits(["bar-click"]);
 
 const chartData = ref({
+  // Dados e configurações específicas do gráfico MRR
   labels: props.metrics.map((metric) => metric.monthYear),
   datasets: [
     {
@@ -42,6 +46,7 @@ const onElementClick = (event, element, chart) => {
 };
 
 const chartOptions = ref({
+  // Configurações do gráfico, incluindo interações
   responsive: true,
   maintainAspectRatio: false,
   animation: {

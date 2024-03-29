@@ -1,6 +1,7 @@
 <template>
   <transition name="modal">
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+      <!-- Conteúdo do modal com detalhes da métrica e opção para fechar -->
       <div class="modal-content">
         <h2>Detalhes da Métrica</h2>
         <p>{{ details }}</p>
@@ -13,6 +14,7 @@
 <script setup>
 import { ref } from "vue";
 
+// Define as props e emite evento para fechar o modal
 const props = defineProps({
   showModal: Boolean,
   details: String,
@@ -20,12 +22,14 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
+// Função para fechar o modal
 const closeModal = () => {
   emit("close");
 };
 </script>
 
 <style>
+/* Estilos do modal, incluindo transições */
 .modal-overlay {
   position: fixed;
   top: 0;

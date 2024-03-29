@@ -1,7 +1,9 @@
 <template>
   <div>
+    <!-- Seleção e upload de arquivo -->
     <input type="file" @change="handleFileUpload" />
     <button @click="submitFile">Upload</button>
+    <!-- Mensagem de feedback para o usuário -->
     <div v-if="message" :class="`message ${messageType}`">{{ message }}</div>
   </div>
 </template>
@@ -10,10 +12,13 @@
 import { ref } from "vue";
 import axios from "axios";
 
+// Estados para controle do upload
 const selectedFile = ref(null);
 const isLoading = ref(false);
 const message = ref("");
 const messageType = ref("");
+
+// Funções e estados adicionais para controle de UI e envio de dados
 const emit = defineEmits(["upload-success"]);
 
 const handleFileUpload = (event) => {
@@ -21,6 +26,7 @@ const handleFileUpload = (event) => {
 };
 
 const submitFile = async () => {
+  // Implementação da lógica de upload, incluindo tratamento de sucesso e erro
   if (!selectedFile.value) {
     message.value = "Por favor, escolha um arquivo.";
     messageType.value = "error";
@@ -33,7 +39,7 @@ const submitFile = async () => {
 
   try {
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  
+
     const response = await axios.post(`${backendUrl}/upload`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -54,6 +60,7 @@ const submitFile = async () => {
 </script>
 
 <style>
+/* Estilos para feedback visual das mensagens */
 .message {
   padding: 10px;
   margin-top: 10px;

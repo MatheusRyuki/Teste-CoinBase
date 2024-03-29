@@ -8,24 +8,24 @@
 import { ref, computed } from "vue";
 import { BarChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
-Chart.register(...registerables);
 
+Chart.register(...registerables); // Registra componentes do Chart.js
+
+// Recebe os dados das métricas como prop
 const props = defineProps({
   metrics: Array,
 });
 
+// Calcula cores dinâmicas para o gráfico baseadas na taxa de Churn
 const dynamicColors = computed(() => {
   return props.metrics.map((metric) => {
+    // Define a cor baseada no valor da taxa de Churn
     const churnRate = metric.churnRate;
-    if (churnRate < 10) {
-      return "#76D7C4"; 
-    } else if (churnRate < 20) {
-      return "#F7DC6F"; 
-    } else {
-      return "#E74C3C";
-    }
+    return churnRate < 10 ? "#76D7C4" : churnRate < 20 ? "#F7DC6F" : "#E74C3C";
   });
 });
+
+// Emite evento quando um ponto do gráfico é clicado
 const emit = defineEmits(["bar-click"]);
 
 const onElementClick = (event, element, chart) => {
@@ -36,6 +36,7 @@ const onElementClick = (event, element, chart) => {
   }
 };
 
+// Configuração dos dados e opções do gráfico
 const chartData = ref({
   labels: props.metrics.map((metric) => metric.monthYear),
   datasets: [
@@ -48,6 +49,7 @@ const chartData = ref({
 });
 
 const chartOptions = ref({
+   // Configurações adicionais, incluindo interatividade
   responsive: true,
   maintainAspectRatio: false,
   animation: {
