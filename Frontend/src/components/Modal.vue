@@ -1,11 +1,13 @@
 <template>
-  <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
-    <div class="modal-content">
-      <h2>Detalhes da Métrica</h2>
-      <p>{{ details }}</p>
-      <button @click="closeModal">Fechar</button>
+  <transition name="modal">
+    <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+      <div class="modal-content">
+        <h2>Detalhes da Métrica</h2>
+        <p>{{ details }}</p>
+        <button @click="closeModal">Fechar</button>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script setup>
@@ -43,5 +45,22 @@ const closeModal = () => {
   border-radius: 5px;
   max-width: 500px;
   text-align: center;
+}
+
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease-out;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.modal-enter-to,
+.modal-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>

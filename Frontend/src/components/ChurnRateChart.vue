@@ -53,9 +53,23 @@ const chartOptions = ref({
       display: true,
       text: "Taxa de Churn - Porcentagem de Cancelamento",
     },
+    tooltip: {
+      enabled: true,
+      mode: "index",
+      intersect: false,
+      callbacks: {
+        title: (tooltipItems) => {
+          return `Data: ${tooltipItems[0].label}`;
+        },
+        label: (tooltipItem) => {
+          const label = tooltipItem.dataset.label || "";
+          return `${label}: ${tooltipItem.formattedValue}`;
+        },
+      },
+    },
   },
   onHover: (event, chartElement) => {
-    event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+    event.native.target.style.cursor = chartElement[0] ? "pointer" : "default";
   },
   onClick: onElementClick,
 });

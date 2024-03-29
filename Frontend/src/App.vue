@@ -4,8 +4,12 @@
     <FileUpload @upload-success="handleUploadSuccess" :is-loading="isLoading" />
     <div v-if="isLoading" class="loading-indicator">Carregando...</div>
     <div v-if="!isLoading && metricsData.length" class="charts">
-      <MrrChart :metrics="metricsData" @bar-click="onChartClick" />
-      <ChurnRateChart :metrics="metricsData" @bar-click="onChartClick" />
+      <div class="card">
+        <MrrChart :metrics="metricsData" @bar-click="onChartClick" />
+      </div>
+      <div class="card">
+        <ChurnRateChart :metrics="metricsData" @bar-click="onChartClick" />
+      </div>
     </div>
     <Modal
       :show-modal="showDetailsModal"
@@ -78,5 +82,14 @@ const onChartClick = (metric) => {
     flex-direction: column;
     align-items: center;
   }
+}
+
+.card {
+  background-color: white;
+  border-radius: 8px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 10px 0;
+  padding: 20px; 
+  text-align: center;
 }
 </style>
